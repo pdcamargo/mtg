@@ -1,0 +1,7 @@
+{
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "trailingComma": "all",
+  "useTabs": false,
+  "tabWidth": 2
+}
