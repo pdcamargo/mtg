@@ -41,7 +41,7 @@ export interface RelatedUris {
   mtgtop8: string;
 }
 
-declare interface Card {
+declare interface ICard {
   id: string;
   oracle_id: string;
   multiverse_ids: number[];
@@ -100,3 +100,61 @@ declare interface Card {
   prices: Prices;
   related_uris: RelatedUris;
 }
+
+export type XY = {
+  x: number;
+  y: number;
+};
+
+export type FieldCardPosition = {
+  0: XY;
+  1: XY;
+  2: XY;
+  3: XY;
+};
+
+export type FieldCardDom = {
+  selector: string;
+  position: FieldCardPosition;
+};
+
+export type FieldCard = {
+  dom: FieldCardDom;
+  card: ICard;
+};
+
+export type IPlayer = {
+  displayName: string;
+  playerIndex: number;
+  playerId: string;
+};
+
+export type Match = {
+  [playerId: string]: {
+    mtg: {
+      hand: ICard[];
+      grave: ICard[];
+      exile: ICard[];
+      field: FieldCard[];
+      deck: ICard[];
+    };
+    socket: string;
+  } & IPlayer;
+};
+
+export type IJoinMatch = {
+  playerId: string;
+  displayName: string;
+  deckList: string[];
+};
+
+export type IPlayCard = {
+  playerId: string;
+  cardIndex: number;
+};
+
+export type IUpdateCardPosition = {
+  playerId: string;
+  cardIndex: number;
+  position: FieldCardPosition;
+};

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import database from "../../database";
+import database from "../../mtg-server/database";
 import { Card } from "../../declarations";
 
 type Data = {
