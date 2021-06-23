@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "server": "tsc -p ./mtg-server/tsconfig.server.json",
+    "server": "yarn tsc -p ./mtg-server/tsconfig.server.json",
     "dev": "yarn server && node server.js",
     "build": "next build",
     "start": "yarn server && NODE_ENV=production node server.js"
