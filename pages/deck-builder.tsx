@@ -3,7 +3,7 @@ import { Box, Flex, Textarea, Button, Text } from "@chakra-ui/react";
 
 import usePost from "../src/hooks/usePost";
 
-import { Card } from "../declarations";
+import { ICard } from "../declarations";
 
 function downloadObjectAsJson(exportObj: any, exportName: string) {
   const dataStr =
@@ -18,7 +18,7 @@ function downloadObjectAsJson(exportObj: any, exportName: string) {
 }
 
 type Data = {
-  cards: Card[];
+  cards: ICard[];
 };
 type ValidateDeckResponse = {
   invalidCards: string[];
