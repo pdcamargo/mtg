@@ -1,14 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { Card } from "../../declarations";
+import { ICard } from "../../declarations";
 
 type Data = {
-  cards?: Card[];
+  cards?: ICard[];
   err?: any;
 };
 
 export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const { name } = req.query;
-  const cards: Card[] = [];
+  const cards: ICard[] = [];
   res.status(200).json({ cards });
 };

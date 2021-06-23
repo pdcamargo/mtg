@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import database from "../../mtg-server/database";
-import { Card } from "../../declarations";
+import { ICard } from "../../declarations";
 
 type Data = {
-  deck: Card[];
+  deck: ICard[];
   invalidCards?: string[];
 };
 
@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
       return database.findOneByName(cardName);
     })
-    .filter(Boolean) as Card[];
+    .filter(Boolean) as ICard[];
 
   return res.json({
     deck,
