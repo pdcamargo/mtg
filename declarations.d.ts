@@ -158,3 +158,8 @@ export type IUpdateCardPosition = {
   cardIndex: number;
   position: FieldCardPosition;
 };
+
+export type Offset = {
+  offsetWidth: number;
+  offsetHeight: number;
+};

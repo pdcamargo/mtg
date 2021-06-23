@@ -1,19 +1,38 @@
 import React, { useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, BoxProps } from "@chakra-ui/react";
 
 type CardProps = {
   id?: string;
   url: string;
-  position?: any;
-  style?: {
-    left: string;
-    top: string;
+  position?: BoxProps["position"];
+  coordinates?: {
+    x: number;
+    y: number;
   };
+  positionStrategy?: "absolute" | "translate";
 };
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ id, position, style, url }, ref) => {
+  (
+    {
+      id,
+      position,
+      coordinates = { x: 0, y: 0 },
+      url,
+      positionStrategy = "absolute",
+    },
+    ref,
+  ) => {
     const [isTap, setIsTap] = useState(false);
+
+    const translate =
+      positionStrategy === "translate"
+        ? `translate(${coordinates.x}px, ${coordinates.y}px)`
+        : "";
+    const style = {
+      left: positionStrategy === "absolute" ? coordinates.x : 0,
+      top: positionStrategy === "absolute" ? coordinates.y : 0,
+    };
 
     return (
       <Box
@@ -26,10 +45,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         bgImage={`url(${url})`}
         overflow="hidden"
         bgSize="100% 100%"
-        transform={`rotate(${isTap ? "90deg" : "0"})`}
+        transition="transform ease .75s"
+        transform={`rotate(${isTap ? "90deg" : "0"}) ${translate}`}
         onDoubleClick={() => setIsTap((prev) => !prev)}
-        style={style}
         position={position}
+        style={style}
       />
     );
   },

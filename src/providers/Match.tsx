@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useRouter } from "next/router";
@@ -19,6 +20,10 @@ type ContextType = {
   match: Match;
   playerId: string;
   updateCardPosition: (data: IUpdateCardPosition) => void;
+  opponents: {
+    idx: number;
+    match?: Match[string];
+  }[];
 };
 
 const Context = createContext({} as ContextType);
@@ -28,6 +33,35 @@ const decks: Record<string, string[]> = {
   "2": ["3 Island"],
   "3": ["3 Swamp"],
   "4": ["3 Scion of the Ur-Dragon"],
+};
+
+const posByIdx: Record<number, [number, number, number, string]> = {
+  0: [-1, 3, -1, ">"],
+  1: [2, -2, 4, "<"],
+  2: [1, -3, 4, "<"],
+};
+
+const getOpponentByPos = (match: Match, playerId: string) => (pos: number) => {
+  const playerIdx = match[playerId].playerIndex;
+  const keys = Object.keys(match).filter((id) => id !== playerId);
+
+  const idx = keys.findIndex((id) => {
+    const values = posByIdx[pos];
+    const operator = values[3];
+
+    const firstValue = playerIdx + values[0];
+    const secondValue = playerIdx + values[1];
+
+    const condition =
+      operator === ">" ? firstValue > values[2] : firstValue < values[2];
+
+    return match[id].playerIndex === (condition ? firstValue : secondValue);
+  });
+
+  return {
+    idx,
+    match: match?.[keys[idx]],
+  };
 };
 
 const MatchProvider: React.FC = ({ children }) => {
@@ -82,16 +116,26 @@ const MatchProvider: React.FC = ({ children }) => {
   const updateCardPosition = useCallback(
     (data: IUpdateCardPosition) => {
       socket.emit("updateCardPosition", data);
-
-      console.log(data);
     },
     [socket],
   );
 
+  const opponents = useMemo(() => {
+    if (!match || !playerId) {
+      return null;
+    }
+
+    const getOpponent = getOpponentByPos(match, playerId);
+
+    return [getOpponent(0), getOpponent(1), getOpponent(2)];
+  }, [match, playerId]);
+
   return (
     <>
-      {match && playerId && (
-        <Context.Provider value={{ match, playerId, updateCardPosition }}>
+      {match && playerId && opponents && (
+        <Context.Provider
+          value={{ match, playerId, updateCardPosition, opponents }}
+        >
           {children}
         </Context.Provider>
       )}

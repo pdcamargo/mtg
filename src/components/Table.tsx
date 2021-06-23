@@ -6,25 +6,25 @@ import Card from "./Card";
 const propsByIdx: Record<number, BoxProps> = {
   0: {
     transform: "rotate(0deg) translateX(-50%)",
-    bottom: 0,
+    bottom: -110,
     left: "50%",
     boxShadow: "0px 6px black",
   },
   1: {
-    transform: "rotate(90deg) translateX(-30%)",
-    left: 0,
+    transform: "rotate(90deg) translateX(-45%)",
+    left: -100,
     top: "50%",
     boxShadow: "6px -3px black",
   },
   2: {
     transform: "rotate(180deg) translateX(50%)",
-    top: 0,
+    top: -290,
     left: "50%",
     boxShadow: "0px -6px black",
   },
   3: {
-    transform: "rotate(270deg) translateX(30%)",
-    right: 0,
+    transform: "rotate(270deg) translateX(45%)",
+    right: -100,
     top: "50%",
     boxShadow: "-6px -3px black",
   },
@@ -33,13 +33,14 @@ const propsByIdx: Record<number, BoxProps> = {
 const Table: React.FC = ({ children }) => {
   return (
     <Box
-      width="100vw"
-      height="100vh"
+      width="1360px"
+      height="720px"
       display="flex"
       alignItems="center"
       justifyContent="center"
+      pos="relative"
     >
-      <Box position="relative" width="100%" height="100vh">
+      <Box position="relative" width="1360px" height="720px">
         {React.Children.map(children, (child, idx) => (
           <Box
             {...propsByIdx[idx]}
