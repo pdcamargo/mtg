@@ -1,34 +1,32 @@
-import React from "react";
-import { Box, BoxProps } from "@chakra-ui/react";
-
-import Card from "./Card";
+import React from 'react'
+import { Box, BoxProps } from '@chakra-ui/react'
 
 const propsByIdx: Record<number, BoxProps> = {
   0: {
-    transform: "rotate(0deg) translateX(-50%)",
+    transform: 'rotate(0deg) translateX(-50%)',
     bottom: -110,
-    left: "50%",
-    boxShadow: "0px 6px black",
+    left: '50%',
+    boxShadow: '0px 6px black',
   },
   1: {
-    transform: "rotate(90deg) translateX(-45%)",
+    transform: 'rotate(90deg) translateX(-45%)',
     left: -100,
-    top: "50%",
-    boxShadow: "6px -3px black",
+    top: '50%',
+    boxShadow: '6px -3px black',
   },
   2: {
-    transform: "rotate(180deg) translateX(50%)",
+    transform: 'rotate(180deg) translateX(50%)',
     top: -290,
-    left: "50%",
-    boxShadow: "0px -6px black",
+    left: '50%',
+    boxShadow: '0px -6px black',
   },
   3: {
-    transform: "rotate(270deg) translateX(45%)",
+    transform: 'rotate(270deg) translateX(45%)',
     right: -100,
-    top: "50%",
-    boxShadow: "-6px -3px black",
+    top: '50%',
+    boxShadow: '-6px -3px black',
   },
-};
+}
 
 const Table: React.FC = ({ children }) => {
   return (
@@ -42,12 +40,7 @@ const Table: React.FC = ({ children }) => {
     >
       <Box position="relative" width="1360px" height="720px">
         {React.Children.map(children, (child, idx) => (
-          <Box
-            {...propsByIdx[idx]}
-            display="inline-flex"
-            pos="absolute"
-            borderRadius="5px"
-          >
+          <Box {...propsByIdx[idx]} display="inline-flex" pos="absolute" borderRadius="5px">
             {child}
             <Box
               display="inline-flex"
@@ -79,7 +72,7 @@ const Table: React.FC = ({ children }) => {
         ))}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Table;
+export default Table

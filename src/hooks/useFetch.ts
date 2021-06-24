@@ -1,48 +1,44 @@
-import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { useState, useEffect, useCallback } from 'react'
+import axios from 'axios'
 
-type LoadingState = "idle" | "fetching" | "resolved" | "error";
+type LoadingState = 'idle' | 'fetching' | 'resolved' | 'error'
 
 type Options = {
-  fetchOnInit?: boolean;
-};
+  fetchOnInit?: boolean
+}
 
 const useFetch = <T>(
   path: string,
-  options?: Options,
-): [
-  T | undefined,
-  LoadingState,
-  (params?: Record<string, string>) => Promise<void>,
-] => {
-  const opt: Options = options || { fetchOnInit: false };
+  options?: Options
+): [T | undefined, LoadingState, (params?: Record<string, string>) => Promise<void>] => {
+  const opt: Options = options || { fetchOnInit: false }
 
-  const [loadingState, setLoadingState] = useState<LoadingState>("idle");
-  const [loadedData, setData] = useState<T>();
+  const [loadingState, setLoadingState] = useState<LoadingState>('idle')
+  const [loadedData, setData] = useState<T>()
 
   const fetchData = useCallback(
     async (params?: Record<string, string>) => {
-      if (loadingState === "fetching") {
-        return;
+      if (loadingState === 'fetching') {
+        return
       }
 
-      setLoadingState("fetching");
+      setLoadingState('fetching')
 
-      const { data } = await axios.get<T>(path, { params });
+      const { data } = await axios.get<T>(path, { params })
 
-      setData(data);
-      setLoadingState("resolved");
+      setData(data)
+      setLoadingState('resolved')
     },
-    [loadingState],
-  );
+    [loadingState, path]
+  )
 
   useEffect(() => {
-    if (loadingState === "idle" && opt?.fetchOnInit) {
-      fetchData();
+    if (loadingState === 'idle' && opt?.fetchOnInit) {
+      fetchData()
     }
-  }, [loadingState, options, fetchData]);
+  }, [loadingState, options, fetchData])
 
-  return [loadedData, loadingState, fetchData];
-};
+  return [loadedData, loadingState, fetchData]
+}
 
-export default useFetch;
+export default useFetch

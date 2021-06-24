@@ -1,14 +1,14 @@
-import React from "react";
-import { Box, BoxProps } from "@chakra-ui/react";
+import React from 'react'
+import { Box, BoxProps } from '@chakra-ui/react'
 
 type PlayMatchProps = {
-  size: "sm" | "md" | "lg";
-  url: string;
-};
+  size: 'sm' | 'md' | 'lg'
+  url: string
+}
 
-const baseWidth = 610;
-const baseHeight = 330;
-const playMatchPropsBySize: Record<PlayMatchProps["size"], BoxProps> = {
+const baseWidth = 610
+const baseHeight = 330
+const playMatchPropsBySize: Record<PlayMatchProps['size'], BoxProps> = {
   sm: {
     width: `${baseWidth * 0.7}px`,
     height: `${baseHeight * 0.7}px`,
@@ -21,14 +21,9 @@ const playMatchPropsBySize: Record<PlayMatchProps["size"], BoxProps> = {
     width: `${baseWidth}px`,
     height: `${baseHeight}px`,
   },
-};
+}
 
-const PlayMatch: React.FC<PlayMatchProps> = ({
-  size,
-  url,
-  children,
-  ...props
-}) => {
+const PlayMatch: React.FC<PlayMatchProps> = ({ size, url, children, ...props }) => {
   return (
     <Box
       {...playMatchPropsBySize[size]}
@@ -41,7 +36,7 @@ const PlayMatch: React.FC<PlayMatchProps> = ({
     >
       {children}
     </Box>
-  );
-};
+  )
+}
 
-export default PlayMatch;
+export default PlayMatch

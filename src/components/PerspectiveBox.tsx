@@ -1,16 +1,13 @@
-import { Box } from "@chakra-ui/react";
-import React from "react";
-import useWindowSize from "../hooks/useWindowSize";
+import { Box } from '@chakra-ui/react'
+import React from 'react'
+import useWindowSize from '../hooks/useWindowSize'
 
 type PerspectiveBoxProps = {
-  perspective?: string;
-};
+  perspective?: string
+}
 
-const PerspectiveBox: React.FC<PerspectiveBoxProps> = ({
-  perspective = "2640px",
-  children,
-}) => {
-  const { height } = useWindowSize();
+const PerspectiveBox: React.FC<PerspectiveBoxProps> = ({ perspective = '2640px', children }) => {
+  const { height } = useWindowSize()
 
   return (
     <Box width="100vw" height="100vh" overflow="hidden">
@@ -34,7 +31,7 @@ const PerspectiveBox: React.FC<PerspectiveBoxProps> = ({
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default PerspectiveBox;
+export default PerspectiveBox

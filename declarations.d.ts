@@ -1,165 +1,167 @@
 export interface ImageUris {
-  small: string;
-  normal: string;
-  large: string;
-  png: string;
-  art_crop: string;
-  border_crop: string;
+  small: string
+  normal: string
+  large: string
+  png: string
+  art_crop: string
+  border_crop: string
 }
 
 export interface Legalities {
-  standard: string;
-  future: string;
-  historic: string;
-  gladiator: string;
-  pioneer: string;
-  modern: string;
-  legacy: string;
-  pauper: string;
-  vintage: string;
-  penny: string;
-  commander: string;
-  brawl: string;
-  duel: string;
-  oldschool: string;
-  premodern: string;
+  standard: string
+  future: string
+  historic: string
+  gladiator: string
+  pioneer: string
+  modern: string
+  legacy: string
+  pauper: string
+  vintage: string
+  penny: string
+  commander: string
+  brawl: string
+  duel: string
+  oldschool: string
+  premodern: string
 }
 
 export interface Prices {
-  usd: string;
-  usd_foil: string;
-  eur: string;
-  eur_foil: string;
-  tix: string;
+  usd: string
+  usd_foil: string
+  eur: string
+  eur_foil: string
+  tix: string
 }
 
 export interface RelatedUris {
-  gatherer: string;
-  tcgplayer_infinite_articles: string;
-  tcgplayer_infinite_decks: string;
-  edhrec: string;
-  mtgtop8: string;
+  gatherer: string
+  tcgplayer_infinite_articles: string
+  tcgplayer_infinite_decks: string
+  edhrec: string
+  mtgtop8: string
 }
 
 declare interface ICard {
-  id: string;
-  oracle_id: string;
-  multiverse_ids: number[];
-  mtgo_id: number;
-  mtgo_foil_id: number;
-  tcgplayer_id: number;
-  cardmarket_id: number;
-  name: string;
-  lang: string;
-  released_at: string;
-  uri: string;
-  scryfall_uri: string;
-  layout: string;
-  highres_image: boolean;
-  image_status: string;
-  image_uris: ImageUris;
-  mana_cost: string;
-  cmc: number;
-  type_line: string;
-  oracle_text: string;
-  colors: any[];
-  color_identity: any[];
-  keywords: any[];
-  legalities: Legalities;
-  games: string[];
-  reserved: boolean;
-  foil: boolean;
-  nonfoil: boolean;
-  oversized: boolean;
-  promo: boolean;
-  reprint: boolean;
-  variation: boolean;
-  set: string;
-  set_name: string;
-  set_type: string;
-  set_uri: string;
-  set_search_uri: string;
-  scryfall_set_uri: string;
-  rulings_uri: string;
-  prints_search_uri: string;
-  collector_number: string;
-  digital: boolean;
-  rarity: string;
-  flavor_text: string;
-  card_back_id: string;
-  artist: string;
-  artist_ids: string[];
-  illustration_id: string;
-  border_color: string;
-  frame: string;
-  full_art: boolean;
-  textless: boolean;
-  booster: boolean;
-  story_spotlight: boolean;
-  edhrec_rank: number;
-  prices: Prices;
-  related_uris: RelatedUris;
+  id: string
+  oracle_id: string
+  multiverse_ids: number[]
+  mtgo_id: number
+  mtgo_foil_id: number
+  tcgplayer_id: number
+  cardmarket_id: number
+  name: string
+  lang: string
+  released_at: string
+  uri: string
+  scryfall_uri: string
+  layout: string
+  highres_image: boolean
+  image_status: string
+  image_uris: ImageUris
+  mana_cost: string
+  cmc: number
+  type_line: string
+  oracle_text: string
+  colors: string[]
+  color_identity: string[]
+  keywords: string[]
+  legalities: Legalities
+  games: string[]
+  reserved: boolean
+  foil: boolean
+  nonfoil: boolean
+  oversized: boolean
+  promo: boolean
+  reprint: boolean
+  variation: boolean
+  set: string
+  set_name: string
+  set_type: string
+  set_uri: string
+  set_search_uri: string
+  scryfall_set_uri: string
+  rulings_uri: string
+  prints_search_uri: string
+  collector_number: string
+  digital: boolean
+  rarity: string
+  flavor_text: string
+  card_back_id: string
+  artist: string
+  artist_ids: string[]
+  illustration_id: string
+  border_color: string
+  frame: string
+  full_art: boolean
+  textless: boolean
+  booster: boolean
+  story_spotlight: boolean
+  edhrec_rank: number
+  prices: Prices
+  related_uris: RelatedUris
 }
 
 export type XY = {
-  x: number;
-  y: number;
-};
+  x: number
+  y: number
+}
 
 export type FieldCardPosition = {
-  0: XY;
-  1: XY;
-  2: XY;
-  3: XY;
-};
+  0: XY
+  1: XY
+  2: XY
+  3: XY
+}
 
 export type FieldCardDom = {
-  selector: string;
-  position: FieldCardPosition;
-};
+  selector: string
+  position: FieldCardPosition
+}
 
 export type FieldCard = {
-  dom: FieldCardDom;
-  card: ICard;
-};
+  dom: FieldCardDom
+  card: ICard
+  isTap: boolean
+  isFaceDown: boolean
+}
 
 export type IPlayer = {
-  displayName: string;
-  playerIndex: number;
-  playerId: string;
-};
+  displayName: string
+  playerIndex: number
+  playerId: string
+}
 
 export type Match = {
   [playerId: string]: {
     mtg: {
-      hand: ICard[];
-      grave: ICard[];
-      exile: ICard[];
-      field: FieldCard[];
-      deck: ICard[];
-    };
-    socket: string;
-  } & IPlayer;
-};
+      hand: ICard[]
+      grave: ICard[]
+      exile: ICard[]
+      field: FieldCard[]
+      deck: ICard[]
+    }
+    socket: string
+  } & IPlayer
+}
 
 export type IJoinMatch = {
-  playerId: string;
-  displayName: string;
-  deckList: string[];
-};
+  playerId: string
+  displayName: string
+  deckList: string[]
+}
 
 export type IPlayCard = {
-  playerId: string;
-  cardIndex: number;
-};
+  playerId: string
+  cardIndex: number
+}
 
 export type IUpdateCardPosition = {
-  playerId: string;
-  cardIndex: number;
-  position: FieldCardPosition;
-};
+  playerId: string
+  cardIndex: number
+  position: FieldCardPosition
+}
 
 export type Offset = {
-  offsetWidth: number;
-  offsetHeight: number;
-};
+  offsetWidth: number
+  offsetHeight: number
+}

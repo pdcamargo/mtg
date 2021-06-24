@@ -1,14 +1,14 @@
 const debounce = (callback: () => void, limit: number) => {
-  let wait = false;
+  let wait = false
   return function () {
     if (!wait) {
-      callback();
-      wait = true;
+      callback()
+      wait = true
       setTimeout(function () {
-        wait = false;
-      }, limit);
+        wait = false
+      }, limit)
     }
-  };
-};
+  }
+}
 
-export default debounce;
+export default debounce

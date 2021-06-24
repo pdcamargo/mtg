@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react'
 
 const Match: React.FC = () => {
-  return <></>;
-};
+  return <></>
+}
 
-export default Match;
+export default Match

@@ -1,5 +1,5 @@
-import React from "react";
-import { Box } from "@chakra-ui/react";
+import React from 'react'
+import { Box } from '@chakra-ui/react'
 
 const Sleeve: React.FC = ({ children }) => {
   return (
@@ -8,7 +8,7 @@ const Sleeve: React.FC = ({ children }) => {
         {children}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default Sleeve;
+export default Sleeve

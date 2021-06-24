@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 
-import PlayableField from "../src/components/PlayableField";
+import PlayableField from '../src/components/PlayableField'
 
-import MatchProvider from "../src/providers/Match";
-import SocketProvider from "../src/providers/Socket";
+import MatchProvider from '../src/providers/Match'
+import SocketProvider from '../src/providers/Socket'
 
 const Playground: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const Playground: React.FC = () => {
         <PlayableField />
       </MatchProvider>
     </SocketProvider>
-  );
-};
+  )
+}
 
-export default Playground;
+export default Playground

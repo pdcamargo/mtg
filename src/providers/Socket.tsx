@@ -1,15 +1,15 @@
-import React, { createContext, useContext, useRef } from "react";
-import io, { Socket } from "socket.io-client";
+import React, { createContext, useContext, useRef } from 'react'
+import io, { Socket } from 'socket.io-client'
 
-type ContextType = { socket: Socket };
+type ContextType = { socket: Socket }
 
-const Context = createContext({} as ContextType);
+const Context = createContext({} as ContextType)
 
 const SocketProvider: React.FC = ({ children }) => {
-  const socket = useRef<Socket>();
+  const socket = useRef<Socket>()
 
   if (!socket.current) {
-    socket.current = io();
+    socket.current = io()
   }
 
   return (
@@ -20,13 +20,13 @@ const SocketProvider: React.FC = ({ children }) => {
     >
       {children}
     </Context.Provider>
-  );
-};
+  )
+}
 
 export const useSocket = () => {
-  const { socket } = useContext(Context);
+  const { socket } = useContext(Context)
 
-  return socket;
-};
+  return socket
+}
 
-export default SocketProvider;
+export default SocketProvider

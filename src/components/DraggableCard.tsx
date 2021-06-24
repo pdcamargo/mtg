@@ -1,33 +1,34 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { getEmptyImage } from "react-dnd-html5-backend";
-import { useDrag } from "react-dnd";
+import React, { useEffect } from 'react'
+import { getEmptyImage } from 'react-dnd-html5-backend'
+import { useDrag } from 'react-dnd'
 
-import Card from "./Card";
+import Card from './Card'
 
-import { ICard, XY } from "../../declarations";
+import { ICard, XY } from '../../declarations'
 
 type DraggableCardProps = {
-  id: string;
-  card: ICard;
-  initialPosition: XY;
-};
+  id: string
+  card: ICard
+  initialPosition: XY
+}
 
-const DraggableCard: React.FC<DraggableCardProps> = ({
-  id,
-  card,
-  initialPosition,
-}) => {
+export type DraggableCardItemType = {
+  id: string
+  card: ICard
+}
+
+const DraggableCard: React.FC<DraggableCardProps> = ({ id, card, initialPosition }) => {
   const [, drag, preview] = useDrag(
     () => ({
-      type: "card",
-      item: { id },
+      type: 'card',
+      item: { id, card } as DraggableCardItemType,
     }),
-    [id],
-  );
+    [id]
+  )
 
   useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true });
-  }, []);
+    preview(getEmptyImage(), { captureDraggingState: true })
+  }, [preview])
 
   return (
     <Card
@@ -40,7 +41,7 @@ const DraggableCard: React.FC<DraggableCardProps> = ({
         y: initialPosition.y,
       }}
     />
-  );
-};
+  )
+}
 
-export default DraggableCard;
+export default DraggableCard

@@ -1,4 +1,4 @@
-import { Offset, XY } from "../../../declarations";
+import { Offset, XY } from '../../../declarations'
 
 export const getXYByIndex = (card: Offset, client: XY) => ({
   0: (playmat: HTMLDivElement) => ({
@@ -17,12 +17,9 @@ export const getXYByIndex = (card: Offset, client: XY) => ({
     x: client.x + card.offsetWidth - playmat.offsetWidth,
     y: client.y - card.offsetHeight / 2 - playmat.offsetWidth,
   }),
-});
+})
 
 export const getPlaymats = () =>
   [...Array(4)]
     .map((_, idx) => idx)
-    .map(
-      (id) =>
-        document.querySelector(`[data-playmat="${id}"]`) as HTMLDivElement,
-    );
+    .map((id) => document.querySelector(`[data-playmat="${id}"]`) as HTMLDivElement)
