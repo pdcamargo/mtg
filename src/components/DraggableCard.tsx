@@ -1,47 +1,69 @@
-import React, { useEffect } from 'react'
+import React, { memo, useEffect } from 'react'
 import { getEmptyImage } from 'react-dnd-html5-backend'
 import { useDrag } from 'react-dnd'
 
-import Card from './Card'
+import FieldCard from './FieldCard'
 
 import { ICard, XY } from '../../declarations'
 
 type DraggableCardProps = {
   id: string
   card: ICard
+  cardIndex: number
   initialPosition: XY
+  onTapCard?: () => void
+  isTapped?: boolean
+  sleeveColor: string
+  sleeveColorGradient: string
 }
 
 export type DraggableCardItemType = {
   id: string
   card: ICard
+  cardIndex: number
 }
 
-const DraggableCard: React.FC<DraggableCardProps> = ({ id, card, initialPosition }) => {
-  const [, drag, preview] = useDrag(
-    () => ({
-      type: 'card',
-      item: { id, card } as DraggableCardItemType,
-    }),
-    [id]
-  )
+const DraggableCard: React.FC<DraggableCardProps> = memo(
+  ({
+    id,
+    card,
+    cardIndex,
+    initialPosition,
+    onTapCard,
+    isTapped,
+    sleeveColor,
+    sleeveColorGradient,
+  }) => {
+    const [, drag, preview] = useDrag(
+      () => ({
+        type: 'card',
+        item: { id, card, cardIndex } as DraggableCardItemType,
+      }),
+      [id, card, cardIndex]
+    )
 
-  useEffect(() => {
-    preview(getEmptyImage(), { captureDraggingState: true })
-  }, [preview])
+    useEffect(() => {
+      preview(getEmptyImage(), { captureDraggingState: true })
+    }, [preview])
 
-  return (
-    <Card
-      id={id}
-      ref={drag}
-      url={card.image_uris.border_crop}
-      position="absolute"
-      coordinates={{
-        x: initialPosition.x,
-        y: initialPosition.y,
-      }}
-    />
-  )
-}
+    return (
+      <FieldCard
+        canTap
+        id={id}
+        ref={drag}
+        card={card}
+        position="absolute"
+        isTapped={isTapped}
+        onTapCard={onTapCard}
+        sleeveColor={sleeveColor}
+        sleeveColorGradient={sleeveColorGradient}
+        coordinates={{
+          x: initialPosition.x,
+          y: initialPosition.y,
+        }}
+      />
+    )
+  }
+)
 
 export default DraggableCard

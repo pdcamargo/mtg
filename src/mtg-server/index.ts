@@ -2,11 +2,25 @@ import { Server, Socket } from 'socket.io'
 import { v4 as uniqueId } from 'uuid'
 import database from './database'
 
-import { Match, IJoinMatch, XY, IPlayCard, FieldCard, IUpdateCardPosition } from '../declarations'
+const defaultPlaymatchUrl = 'https://images2.alphacoders.com/157/157160.jpg'
+const defaultSleeveColor = '#000000'
+const defaultSleeveColorGradient = 'linear-gradient(147deg, #000000 0%, #434343 74%)'
+
+import {
+  Match,
+  IJoinMatch,
+  XY,
+  IPlayCard,
+  FieldCard,
+  IUpdateCardPosition,
+  ITapCard,
+  IChangeFaceDownCard,
+  IDrawCard,
+} from '../../declarations'
 
 const defaultXy: XY = {
-  x: 150,
-  y: 150,
+  x: 100,
+  y: 100,
 }
 
 class MtgServer {
@@ -30,7 +44,10 @@ class MtgServer {
     emitter.to('match').emit('updateMatch', this.match)
   }
 
-  joinMatch = ({ playerId, displayName, deckList }: IJoinMatch, socket: Socket) => {
+  joinMatch = (
+    { playerId, displayName, deckList, sleeveColor, sleeveColorGradient, playmatchUrl }: IJoinMatch,
+    socket: Socket
+  ) => {
     if (!this.hasSlotsAvailable && !this.match[playerId]) {
       socket.emit('matchFull')
 
@@ -47,17 +64,32 @@ class MtgServer {
           exile: [],
           field: [],
           grave: [],
-          hand: deck,
+          hand: [],
           deck,
         },
         socket: socket.id,
         displayName,
         playerIndex: Object.keys(this.match).length,
         playerId,
+        playmatchUrl: playmatchUrl || defaultPlaymatchUrl,
+        sleeveColor: sleeveColor || defaultSleeveColor,
+        sleeveColorGradient: sleeveColorGradient || defaultSleeveColorGradient,
       }
     } else {
       this.match[playerId].socket = socket.id
     }
+
+    this.sendUpdateMatch()
+  }
+
+  drawCard = ({ playerId, amount }: IDrawCard) => {
+    if (!this.match[playerId]) {
+      return
+    }
+
+    const cards = this.match[playerId].mtg.deck.splice(0, amount)
+
+    this.match[playerId].mtg.hand.push(...cards)
 
     this.sendUpdateMatch()
   }
@@ -85,10 +117,10 @@ class MtgServer {
           '2': defaultXy,
           '3': defaultXy,
         },
-        selector: uniqueId(),
+        selector: `card-${uniqueId()}`,
       },
       isFaceDown: false,
-      isTap: false,
+      isTapped: false,
     }
 
     this.match[playerId].mtg.field.push(fieldCard)
@@ -105,6 +137,28 @@ class MtgServer {
     this.sendUpdateMatch(socket)
   }
 
+  tapCard = ({ cardIndex, playerId, isTapped }: ITapCard) => {
+    if (!this.match[playerId] || !this.match[playerId].mtg.field[cardIndex]) {
+      return
+    }
+
+    this.match[playerId].mtg.field[cardIndex].isTapped = isTapped
+    this.sendUpdateMatch()
+  }
+
+  changeFaceDownCard = (
+    { cardIndex, playerId, isFaceDown }: IChangeFaceDownCard,
+    socket: Socket
+  ) => {
+    if (!this.match[playerId] || !this.match[playerId].mtg.field[cardIndex]) {
+      return
+    }
+
+    this.match[playerId].mtg.field[cardIndex].isFaceDown = isFaceDown
+
+    this.sendUpdateMatch(socket)
+  }
+
   handleSocket = (socket: Socket) => {
     socket.on('joinMatch', (data: IJoinMatch) => {
       this.joinMatch(data, socket)
@@ -114,10 +168,22 @@ class MtgServer {
       this.playCard(data)
     })
 
+    socket.on('drawCard', (data: IDrawCard) => {
+      this.drawCard(data)
+    })
+
     socket.on('updateCardPosition', (data: IUpdateCardPosition) => {
       this.updateCardPosition(data, socket)
+    })
+
+    socket.on('tapCard', (data: ITapCard) => {
+      this.tapCard(data)
+    })
+
+    socket.on('changeFaceDownCard', (data: IChangeFaceDownCard) => {
+      this.changeFaceDownCard(data, socket)
     })
   }
 }
 
-module.exports = (io: Server) => new MtgServer(io)
+export default (io: Server) => new MtgServer(io)

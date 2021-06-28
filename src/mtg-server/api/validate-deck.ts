@@ -1,7 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-
-import database from '../../mtg-server/database'
-import { ICard } from '../../declarations'
+import database from '../database'
+import { ICard } from '../../../declarations'
+import { Request, Response } from 'express'
 
 type Data = {
   deck: ICard[]
@@ -12,12 +11,12 @@ type Body = {
   list: string[]
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  if (req.method !== 'POST') {
-    return res.status(500).end()
-  }
+export default async (req: Request, res: Response<Data>) => {
+  // if (req.method !== 'POST') {
+  //   return res.status(500).end()
+  // }
 
-  const { list }: Body = req.body || {}
+  const { list }: Body = req.body || { list: [] }
 
   const deck = list
     .map((name) => {

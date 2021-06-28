@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { ICard } from '../../declarations'
+import { ICard } from '../../../declarations'
 
 type Data = {
   cards?: ICard[]

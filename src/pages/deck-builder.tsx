@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Flex, Textarea, Button, Text } from '@chakra-ui/react'
 
-import usePost from '../src/hooks/usePost'
+import usePost from '../hooks/usePost'
 
-function downloadObjectAsJson(exportObj: any, exportName: string) {
+function downloadObjectAsJson(exportObj: unknown, exportName: string) {
   const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj))
   const downloadAnchorNode = document.createElement('a')
   downloadAnchorNode.setAttribute('href', dataStr)
@@ -65,7 +65,7 @@ const DeckBuilder: React.FC = () => {
         height="100%"
         variant="filled"
         borderRadius="0"
-        onChange={(e) => setRawList((e.target as any).value)}
+        onChange={(e) => setRawList(e.target.value)}
         value={rawList}
       />
       <Box

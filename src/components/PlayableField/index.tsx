@@ -4,15 +4,16 @@ import { useDrop } from 'react-dnd'
 import Table from '../Table'
 import PlayMatch from '../PlayMatch'
 import PerspectiveBox from '../PerspectiveBox'
-import Card from '../Card'
-import DraggableCard from '../DraggableCard'
+import FieldCard from '../FieldCard'
+import DraggableCard, { DraggableCardItemType } from '../DraggableCard'
 
-import { useMatch } from '../../providers/Match'
+import { usePlayer, useMethods, useOpponents, useMatch } from '../../providers/MatchProvider/hooks'
 import { FieldCardPosition, XY } from '../../../declarations'
 
 import { getPlaymats, getXYByIndex } from './utils'
-
-const url4 = 'https://media.magic.wizards.com/images/featured/EN_UR01PortraitPost.jpg'
+import Phases from '../Phases'
+import { Box } from '@chakra-ui/react'
+import Lifes from '../Lifes'
 
 let updatedPosition: {
   cardIndex: number
@@ -20,12 +21,15 @@ let updatedPosition: {
 }
 
 const PlayableField: React.FC = () => {
-  const { match, playerId, updateCardPosition, opponents } = useMatch()
+  const player = usePlayer()
+  const match = useMatch()
+  const opponents = useOpponents()
+  const { updateCardPosition, tapCard } = useMethods()
 
   const [, drop] = useDrop(
     () => ({
       accept: 'card',
-      hover(item: { id: string; playMatchId: string }, monitor) {
+      hover(item: DraggableCardItemType, monitor) {
         const xy = monitor.getClientOffset() as XY
 
         const card = document.getElementById(item.id)
@@ -49,53 +53,95 @@ const PlayableField: React.FC = () => {
           3: xyObj[3](playmats[3]),
         }
 
-        const cardIndex = match[playerId].mtg.field.findIndex(
-          (fieldCard) => fieldCard.dom.selector === item.id
-        )
-
         updatedPosition = {
-          cardIndex,
+          cardIndex: item.cardIndex,
           position: updatedPositionData,
         }
 
-        card.style.left = `${updatedPositionData['0'].x}px`
-        card.style.top = `${updatedPositionData['0'].y}px`
+        const left = `${updatedPositionData['0'].x}`
+        const top = `${updatedPositionData['0'].y}`
+
+        card.style.left = `${left}px`
+        card.style.top = `${top}px`
       },
       drop() {
         if (updatedPosition) {
           updateCardPosition({
             cardIndex: updatedPosition.cardIndex,
-            playerId,
+            playerId: player.playerId,
             position: updatedPosition.position,
           })
         }
       },
     }),
-    [playerId, match, updateCardPosition]
+    [player, updateCardPosition]
   )
 
   return (
     <div ref={drop}>
       <PerspectiveBox>
         <Table>
-          <PlayMatch size="lg" url={url4} data-playmat="0">
-            {match[playerId].mtg.field.map((fieldCard) => (
+          <PlayMatch
+            size="lg"
+            url={player.playmatchUrl}
+            data-playmat="0"
+            displayName={player.displayName}
+            playerId={player.playerId}
+          >
+            <Box pos="absolute" left="50%" transform="translateX(-50%)" top="-70px">
+              <Phases />
+            </Box>
+
+            <Box pos="absolute" left="50%" transform="translateX(-50%)" top="-260px">
+              <Lifes
+                players={Object.keys(match).map((id) => ({
+                  displayName: match[id].displayName,
+                  life: 30 + parseInt(`${Math.random() * 10}`),
+                }))}
+              />
+            </Box>
+
+            {player.mtg.field.map((fieldCard, cardIndex) => (
               <DraggableCard
                 key={fieldCard.dom.selector}
                 id={fieldCard.dom.selector}
                 card={fieldCard.card}
+                cardIndex={cardIndex}
+                isTapped={fieldCard.isTapped}
+                sleeveColor={player.sleeveColor}
+                sleeveColorGradient={player.sleeveColorGradient}
+                onTapCard={() => {
+                  tapCard({
+                    cardIndex,
+                    isTapped: !fieldCard.isTapped,
+                    playerId: player.playerId,
+                  })
+                }}
                 initialPosition={fieldCard.dom.position[0]}
               />
             ))}
           </PlayMatch>
 
           {opponents.map((player, idx) => (
-            <PlayMatch size="lg" url={url4} key={`data-playmat=${idx + 1}`} data-playmat={idx + 1}>
+            <PlayMatch
+              size="lg"
+              url={
+                player?.match?.playmatchUrl ||
+                'https://media.magic.wizards.com/images/wallpaper/thrill-of-possibility_ma_stx_1920x1080_wallpaper.jpg'
+              }
+              key={`data-playmat=${idx + 1}`}
+              data-playmat={idx + 1}
+              displayName={player?.match?.displayName}
+              playerId={player?.match?.playerId}
+            >
               {player?.match?.mtg.field.map((fieldCard) => (
-                <Card
+                <FieldCard
                   key={fieldCard.dom.selector}
                   id={fieldCard.dom.selector}
-                  url={fieldCard.card.image_uris.border_crop}
+                  card={fieldCard.card}
+                  isTapped={fieldCard.isTapped}
+                  sleeveColor={`${player.match?.sleeveColor}`}
+                  sleeveColorGradient={`${player.match?.sleeveColorGradient}`}
                   position="absolute"
                   positionStrategy="translate"
                   coordinates={{

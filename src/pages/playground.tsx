@@ -1,15 +1,17 @@
 import React from 'react'
 
-import PlayableField from '../src/components/PlayableField'
+import PlayableField from '../components/PlayableField'
+import Hand from '../components/Hand'
 
-import MatchProvider from '../src/providers/Match'
-import SocketProvider from '../src/providers/Socket'
+import MatchProvider from '../providers/MatchProvider'
+import SocketProvider from '../providers/SocketProvider'
 
 const Playground: React.FC = () => {
   return (
     <SocketProvider>
       <MatchProvider>
         <PlayableField />
+        <Hand />
       </MatchProvider>
     </SocketProvider>
   )

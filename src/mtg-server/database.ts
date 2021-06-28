@@ -1,10 +1,9 @@
 import fs from 'fs'
-import path from 'path'
 
-import { ICard } from '../declarations'
+import { ICard } from '../../declarations'
 
 const fileName = 'mtg-database.json'
-const databasePath = path.join(__dirname, '../', fileName)
+const databasePath = `${process.cwd()}/${fileName}`
 
 let cache: ICard[] = []
 

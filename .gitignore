@@ -14,6 +14,9 @@
 
 # production
 /build
+# production files created by script
+server.js
+/dist
 
 # misc
 .DS_Store

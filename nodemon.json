@@ -1,0 +1,6 @@
+{
+  "watch": ["server.ts", "src/mtg-server"],
+  "ext": "ts,json",
+  "ignore": [],
+  "exec": "yarn build:server && node dist/server.js"
+}

@@ -121,7 +121,7 @@ export type FieldCardDom = {
 export type FieldCard = {
   dom: FieldCardDom
   card: ICard
-  isTap: boolean
+  isTapped: boolean
   isFaceDown: boolean
 }
 
@@ -129,25 +129,33 @@ export type IPlayer = {
   displayName: string
   playerIndex: number
   playerId: string
+  playmatchUrl: string
+  sleeveColor: string
+  sleeveColorGradient: string
 }
 
+export type MatchPlayer = {
+  mtg: {
+    hand: ICard[]
+    grave: ICard[]
+    exile: ICard[]
+    field: FieldCard[]
+    deck: ICard[]
+  }
+  socket: string
+} & IPlayer
+
 export type Match = {
-  [playerId: string]: {
-    mtg: {
-      hand: ICard[]
-      grave: ICard[]
-      exile: ICard[]
-      field: FieldCard[]
-      deck: ICard[]
-    }
-    socket: string
-  } & IPlayer
+  [playerId: string]: MatchPlayer
 }
 
 export type IJoinMatch = {
   playerId: string
   displayName: string
   deckList: string[]
+  playmatchUrl?: string
+  sleeveColor?: string
+  sleeveColorGradient?: string
 }
 
 export type IPlayCard = {
@@ -155,10 +163,27 @@ export type IPlayCard = {
   cardIndex: number
 }
 
+export type IDrawCard = {
+  playerId: string
+  amount: number
+}
+
 export type IUpdateCardPosition = {
   playerId: string
   cardIndex: number
   position: FieldCardPosition
+}
+
+export type ITapCard = {
+  playerId: string
+  cardIndex: number
+  isTapped: boolean
+}
+
+export type IChangeFaceDownCard = {
+  playerId: string
+  cardIndex: number
+  isFaceDown: boolean
 }
 
 export type Offset = {
