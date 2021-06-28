@@ -44,7 +44,6 @@ const DeckCard: React.FC<DeckCardProps> = memo(
         pos="absolute"
         width="70px"
         height="90px"
-        // bgImg={`url(${noiseImg})`}
         bgImg={`${sleeveColorGradient}`}
         bgColor={sleeveColor}
         boxShadow="0px -4px 6px 5px rgba(0, 0, 0, 0.01)"
